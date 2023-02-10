@@ -11,9 +11,9 @@ class _error():
         
     def blip_error(self,Error):
         if self.error_label.winfo_ismapped():
-            self.error_label.destroy()
+            self.error_label.configure(text="")
 
-        self.error_label.config(text= Error)
+        self.error_label.configure(text= Error)
         self.error_label.pack()
     
 
