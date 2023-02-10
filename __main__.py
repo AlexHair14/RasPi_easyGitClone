@@ -55,6 +55,8 @@ def clone_repo(info_instance, error_instance):
         Repo.clone_from(url=url, to_path=path)
     except GitError:
         error_instance.blip_error("Repository not valid")
+        if folder_created:
+            os.rmdir(path)
 
 class _info:
     def __init__(self):
