@@ -14,7 +14,7 @@ class _error():
             self.error_label.configure(text="")
 
         self.error_label.configure(text= Error)
-        self.error_label.pack()
+        self.error_label.grid(padx=5, pady= 5)
     
 
 def clone_repo(info_instance, error_instance):
@@ -53,6 +53,7 @@ def clone_repo(info_instance, error_instance):
     try:
         print("attempted to clone: " + str(url) + " to this directory" + str(path)  )
         Repo.clone_from(url=url, to_path=path)
+        error_instance.blip_error("Clone completed")
     except GitError:
         error_instance.blip_error("Repository not valid")
         if folder_created:
@@ -80,7 +81,6 @@ class _info:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry('300x400')
     root.title("Easy-Clone")
 
     info = _info()
@@ -89,13 +89,18 @@ if __name__ == "__main__":
 
     url = StringVar()
 
-    url_directions = tk.Label(root, text= "Enter a valid public repository ").pack(pady= 10)
+    url_frame = tk.Frame(root, bg= "light grey")
+    url_frame.grid(row=1, padx = 20, pady=10)
+    url_directions = tk.Label(url_frame, text= "Enter a valid public repository").grid(row= 1,  padx = 5, pady= 5)
+    url_box = tk.Entry(url_frame, textvariable = url, width= 50).grid(row=2, padx=5, pady= 5)
 
-    url_box = tk.Entry(root, textvariable = url, width= 25).pack()
 
+    dir_frame = tk.Frame(root, bg= "light grey")
+    dir_frame.grid(row=2, padx = 20, pady=10)
+    dir_button = tk.Button(dir_frame, text="Click to select a directory", command= info.set_path).grid( padx=5, pady = 5)
 
-    dir_button = tk.Button(root, text="Click to select a directory", command= info.set_path).pack(pady= 20)
-
-    commit = tk.Button(root, text= "Clone repository", command= lambda : [info.set_url(url), clone_repo(info, error)]).pack(pady= 10)
+    commit_frame = tk.Frame(root, bg= "light grey")
+    commit_frame.grid(row=3, padx = 20, pady=10)
+    commit = tk.Button(commit_frame, text= "Clone repository", command= lambda : [info.set_url(url), clone_repo(info, error)]).grid(padx = 5, pady= 5)
 
     root.mainloop()
